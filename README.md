@@ -32,11 +32,16 @@ from coincap_hedera_plugin import conincap_h_plugin
 4.- Add the plugin in the plugins secion of the agent
 
 ```py
-const hederaAgentToolkit = new HederaLangchainToolkit({
-client,
-configuration: {
-    tools: [],
-    plugins: [coreQueriesPlugin, coreAccountPlugin, CoinCapHederalugin], // <---- Add these
+async def main():
+        ...
+        configuration=Configuration(
+            tools=[],
+            plugins=[
+                core_account_plugin,
+                core_account_query_plugin,
+                core_token_plugin,
+                core_consensus_plugin,
+                conincap_h_plugin  # <---- add the plugin here
 ```
 
 5.- Use a prompt to ask for you current balance and tell the agent to want it in USD currency, for example like this:
