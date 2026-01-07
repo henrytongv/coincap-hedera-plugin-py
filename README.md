@@ -29,7 +29,14 @@ COINCAP_BEARER_TOKEN=******************************
 from coincap_hedera_plugin import conincap_h_plugin
 ```
 
-4.- Add the plugin in the plugins secion of the agent
+4.- Import the core_account_query_plugin plugin code
+
+This core plugin is already provided by the Hedera, it is needed to query the account (read its balance)
+```py
+from hedera_agent_kit.plugins import core_account_query_plugin
+```
+
+5.- Add the plugin in the plugins secion of the agent
 
 ```py
 async def main():
@@ -37,21 +44,27 @@ async def main():
         configuration=Configuration(
             tools=[],
             plugins=[
-                core_account_plugin,
                 core_account_query_plugin,
-                core_token_plugin,
-                core_consensus_plugin,
                 conincap_h_plugin  # <---- add the plugin here
 ```
 
-5.- Use a prompt to ask for you current balance and tell the agent to want it in USD currency, for example like this:
+6.- Use a prompt to ask for you current balance and tell the agent to want it in USD currency, for example like this:
 
 ```py
 response = await agent.ainvoke(
     {"messages": [{"role": "user", "content": "Get my balance in HBAR and also convert it to USD please"}]},
 ```
 
-6.- Now you can run the example agent and you should get your current HBAR balance converted to USD currency
+> [!NOTE]
+> The previous prompt results in a multi-step tool invocation:
+> 
+> - Fetch the HBAR balance.
+> - Fetch the current HBAR price.
+> - Convert the balance to USD.
+> 
+> It is important for developers to be aware of, as configurations that limit the agent to only one tool call per request will cause this prompt to fail or behave incorrectly.
+
+7.- Now you can run the example agent and you should get your current HBAR balance converted to USD currency
 
 ```bash
 python main.py
@@ -59,12 +72,39 @@ python main.py
 
 ## Tools
 
+### Get HBAR price in USD
+Invoke the CoinCap API to get the current price in USD of one HBAR
+
+#### Python Function
 ```py
-# Use the CoinCap API to get the current price in USD of one HBAR
 def get_hbar_price_from_coincap():
 ```
 
-## (Optional, only needed when creating your own python package) How to publish a PyPi package
+#### Input Parameters
+
+None
+
+#### Output Values
+
+| Value   | Type     | Description |
+|---------|----------|-------------|
+| Result  | `float` | Value in USD currency of 1 HBAR according to CoinCap |
+
+#### Example Prompt
+
+```
+Get my balance in HBAR and also convert it to USD please
+```
+
+## Optional - Code building, only needed when working on the source code
+
+Use a code formatter, for example `black`
+```bash
+pip install black
+black .
+```
+
+## Optional - Distribution, only needed when creating your own python package) How to publish a PyPi package
 1.- Read the [instructions](https://towardsdatascience.com/how-to-upload-your-python-package-to-pypi-de1b363a1b3/)
 
 1.- Create the distribution package

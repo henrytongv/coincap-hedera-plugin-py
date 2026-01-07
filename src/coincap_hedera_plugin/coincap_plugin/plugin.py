@@ -13,6 +13,7 @@ from hedera_agent_kit.shared.utils.prompt_generator import PromptGenerator
 
 from coincap_hedera_plugin.coincap_plugin.tool import get_hbar_price_from_coincap
 
+
 def get_hbar_price_in_usd_prompt(context: Context = {}) -> str:
     """Generate a human-readable description of the get hbar price in usd query tool.
 
@@ -35,10 +36,11 @@ Parameters:
 {usage_instructions}
 """
 
+
 async def get_hbar_price_in_usd_query(
     client: Client,
     context: Context,
-    params: AccountQueryParameters,
+    params: None,
 ) -> ToolResponse:
     """Execute a get hbar price in usd request to coincap API.
 
@@ -55,7 +57,9 @@ async def get_hbar_price_in_usd_query(
     """
     try:
         current_price_of_hbar_in_usd = get_hbar_price_from_coincap()
-        print(f"coincap said that the price in USD of one HBAR is {current_price_of_hbar_in_usd}")
+        print(
+            f"coincap said that the price in USD of one HBAR is {current_price_of_hbar_in_usd}"
+        )
         return ToolResponse(
             human_message=str(current_price_of_hbar_in_usd),
         )
