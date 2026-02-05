@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="coincap-hedera-agent-kit-plugin",
-    version="0.8",
+    version="0.9",
     license="MIT",
     author="Henry Tong",
     author_email="taksantong@gmail.com",
@@ -16,4 +16,5 @@ setup(
         "hedera-agent-kit",
         "requests",
     ],
+    include_package_data=True
 )
